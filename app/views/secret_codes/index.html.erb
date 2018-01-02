@@ -1,0 +1,43 @@
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-8"><h1>Listing Secret Codes</h1></div>
+    <div class="col-md-4">
+      <%= form_tag('/secret_codes', remote: true) do %>
+          <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-5">
+              <%= select_tag :number_of_code, options_for_select((1..100), 10), {class: 'form-control'} %>
+            </div>
+
+            <div class="col-sm-offset-0 col-sm-5">
+              <%= submit_tag 'Generate Codes', class: 'btn btn-primary' %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>User</th>
+      <th>Created At</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @secret_codes.each do |secret_code| %>
+        <tr>
+          <td><%= secret_code.code %></td>
+          <td><%= secret_code.user.email if secret_code.user %></td>
+          <td><%= secret_code.created_at %></td>
+          <td><%= link_to 'Destroy', secret_code, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @secret_codes %>
+</div>
